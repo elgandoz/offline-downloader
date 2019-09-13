@@ -1,0 +1,71 @@
+<html>
+    <head>
+        <title>Get the Version</title>
+        <style>
+            body {
+                font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(to bottom, #87e0fd77 1%,#ffffff 17%,#ffffff 100%);
+            }
+            h1, p {
+                margin-top: 0;
+            }
+            h1 {
+                margin-bottom: 0.5em; 
+            }
+            p {
+                margin-bottom: 2em; 
+            }
+            form {
+                display: flex;
+                align-items: flex-end;
+            }
+            label {
+                display: block;
+                font-size: 0.8em;
+                margin-bottom:0.25em;
+            }
+            input {
+                height: 2.4em;
+                margin-right: 1em;
+                padding: 0.5em;
+                border: 1px solid lightgray;
+                border-radius: 2px;
+            }
+        </style>
+
+    </head>
+    <body>
+        <script>
+            function process() {
+                var author = document.getElementById("author").value;
+                var name = document.getElementById("name").value;
+                var version = document.getElementById("version").value;
+                // https://esbenp.gallery.vsassets.io/_apis/public/gallery/publisher/esbenp/extension/prettier-vscode/1.11.0/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage
+                var url = "https://" + author + ".gallery.vsassets.io/_apis/public/gallery/publisher/" + author + "/extension/" + name + "/" + version + "/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage";
+                location.href = url;
+                return false;
+            }
+        </script>
+            <h1>Download the offline version</h1>
+            <p>Example for <a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode">Prettier [esbenp.prettier-vscode]</a></p>
+        <form onSubmit="return process();">
+            <span>
+                <label>Author</label>
+                <input type="text" name="author" id="author" placeholder="esbenp">
+            </span>
+            <span>
+                <label>Package Name</label>
+                <input type="text" name="name" id="name" placeholder="prettier-vscode">
+            </span>
+            <span>
+                <label>Version</label>
+                <input type="text" name="version" id="version" placeholder="1.11.0">
+            </span>
+            <input type="submit" value="Download">
+        </form>
+    </body>
+</html>
