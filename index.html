@@ -14,10 +14,10 @@
                 margin-top: 0;
             }
             h1 {
-                margin-bottom: 0.5em; 
+                margin-bottom: 0.5em;
             }
             p {
-                margin-bottom: 2em; 
+                margin-bottom: 2em;
             }
             form {
                 display: flex;
@@ -40,13 +40,50 @@
     </head>
     <body>
         <script>
+            function onStartedDownload(id) {
+              console.log(`Started downloading: ${id}`);
+            }
+
+            function onFailed(error) {
+              console.log(`Download failed: ${error}`);
+            }
+
             function process() {
-                var author = document.getElementById("author").value;
-                var name = document.getElementById("name").value;
-                var version = document.getElementById("version").value;
+                var author = document.getElementById('author').value;
+                var name = document.getElementById('name').value;
+                var version = document.getElementById('version').value || 'latest';
+
                 // https://esbenp.gallery.vsassets.io/_apis/public/gallery/publisher/esbenp/extension/prettier-vscode/1.11.0/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage
-                var url = "https://" + author + ".gallery.vsassets.io/_apis/public/gallery/publisher/" + author + "/extension/" + name + "/" + version + "/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage";
-                location.href = url;
+                var url = 'https://' + author + '.gallery.vsassets.io/_apis/public/gallery/publisher/' + author + '/extension/' + name + '/' + version + '/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage';
+                var filename = author + '.' + name + '-' + version + '.vsix';
+
+                // // Method 1:
+                // location.href = url;
+
+                // // Method 2:
+                // fetch(url)
+                //   .then(resp => resp.blob())
+                //   .then(blob => {
+                //     const url = window.URL.createObjectURL(blob);
+                //     const a = document.createElement('a');
+                //     a.style.display = 'none';
+                //     a.href = url;
+                //     // The filename you want
+                //     a.download = filename;
+                //     document.body.appendChild(a);
+                //     a.click();
+                //     window.URL.revokeObjectURL(url);
+                //   });
+
+                // Method 3: (requires modern browsers)
+                var downloading = browser.downloads.download({
+                  url : url,
+                  filename : filename,
+                  conflictAction : 'uniquify',
+                  saveAs : false
+                });
+                downloading.then(onStartedDownload, onFailed);
+
                 return false;
             }
         </script>
@@ -63,7 +100,7 @@
             </span>
             <span>
                 <label>Version</label>
-                <input type="text" name="version" id="version" placeholder="1.11.0">
+                <input type="text" name="version" id="version" placeholder="3.9.0/latest">
             </span>
             <input type="submit" value="Download">
         </form>
